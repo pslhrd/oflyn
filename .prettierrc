@@ -1,0 +1,13 @@
+{
+	"singleQuote": true,
+	"semi": true,
+	"useTabs": true,
+	"tabWidth": 4,
+	"overrides": [
+		{
+			"files": ["*.frag", "*.vert"],
+			"options": { "parser": "glsl-parser" }
+		}
+	],
+	"plugins": ["prettier-plugin-glsl"]
+}
