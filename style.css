@@ -21,6 +21,16 @@ body {
 	background-color: white;
 }
 
+video {
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	z-index: 10;
+	width: 1px;
+	height: 1px;
+	opacity: 0.01;
+}
+
 .debug-gui {
 	position: fixed;
 	top: 10px;

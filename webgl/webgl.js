@@ -4,6 +4,9 @@ import rendererPlugin from './plugins/rendererPlugin';
 import shadersPlugin from './plugins/shadersPlugin';
 import guiPlugin from './plugins/guiPlugin';
 import debugPlugin from './plugins/debugPlugin';
+import loaderPlugin from './plugins/loaderPlugin';
+import postprocessPlugin from './plugins/postprocess/postprocess';
+import touchPlugin from './plugins/touchPlugin';
 import { MainScene } from './components/Scene';
 
 export default function createWebGL(webgl) {
@@ -22,32 +25,44 @@ export default function createWebGL(webgl) {
 		timePlugin,
 		rendererPlugin,
 		shadersPlugin,
+		loaderPlugin,
+		postprocessPlugin,
+		touchPlugin,
 		guiPlugin,
 		debugPlugin,
 	]);
 
 	async function init() {
 		webgl.renderer.init();
+		webgl.loader.init();
 		webgl.scene = new MainScene();
 		webgl.hooks.resize.watch(resize);
 	}
 
-	async function preload() {}
+	async function preload() {
+		await webgl.loader.preload();
+	}
 
 	function start() {
 		webgl.time.init();
 		webgl.scene.triggerInit();
+		webgl.postprocess.init();
 	}
 
 	function update() {
 		webgl.shaders.update();
+		webgl.postprocess.update();
 		webgl.scene.triggerUpdate();
 	}
 
 	function render() {
-		const renderer = webgl.threeRenderer;
-		webgl.scene.triggerRender();
-		renderer.setRenderTarget(null);
+		if (webgl.postprocess.enabled) {
+			webgl.postprocess.render();
+		} else {
+			const renderer = webgl.threeRenderer;
+			webgl.scene.triggerRender();
+			renderer.setRenderTarget(null);
+		}
 	}
 
 	function resize() {

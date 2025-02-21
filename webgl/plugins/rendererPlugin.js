@@ -42,6 +42,7 @@ export default function rendererPlugin(webgl) {
 	function init() {
 		options.canvas = webgl.canvas;
 		renderer = new WebGLRenderer(options);
+		renderer.setClearColor(clearColor);
 		webgl.threeRenderer = renderer;
 
 		resize();
@@ -64,6 +65,7 @@ export default function rendererPlugin(webgl) {
 		if (renderer.getPixelRatio() !== pr) renderer.setPixelRatio(pr);
 		if (!currentSize.equals(domSize))
 			renderer.setSize(domSize.x, domSize.y);
+
 		updateBufferSize();
 	}
 
